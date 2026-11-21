@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AccessCheck — Dashboard</title>
+</head>
+<body>
+  <main>
+    <h1>AccessCheck dashboard</h1>
+
+    <p>
+      Signed in as <strong>{{ user.name }}</strong>.
+      Role: {{ user.role }}.
+      MFA: {{ "enabled" if user.mfa else "disabled" }}.
+    </p>
+
+    <p>
+      This demo's policy uses role and MFA status. It does not use IP address
+      or VPN location to grant access.
+    </p>
+
+    <form method="post" action="{{ url_for('sensitive_action') }}">
+      <button type="submit">Try sensitive demo action</button>
+    </form>
+
+    <form method="post" action="{{ url_for('logout') }}">
+      <button type="submit">Log out</button>
+    </form>
+
+    <h2>Recent audit events</h2>
+    {% if events %}
+      <ul>
+        {% for event in events %}
+          <li>
+            {{ event.created_at }} — {{ event.user_name }}:
+            {{ event.decision }} — {{ event.reason }}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No events yet. Try the sensitive action.</p>
+    {% endif %}
+  </main>
+</body>
+</html>
