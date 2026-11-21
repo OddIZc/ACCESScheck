@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AccessCheck — Demo sign-in</title>
+</head>
+<body>
+  <main>
+    <h1>AccessCheck</h1>
+    <p>Local demo: choose a fictional user to explore access policies.</p>
+
+    {% for user_id, user in users.items() %}
+      <form method="post" action="{{ url_for('demo_login') }}">
+        <input type="hidden" name="user_id" value="{{ user_id }}">
+        <button type="submit">
+          Continue as {{ user.name }} ({{ user.role }},
+          MFA {{ "enabled" if user.mfa else "disabled" }})
+        </button>
+      </form>
+    {% endfor %}
+  </main>
+</body>
+</html>
